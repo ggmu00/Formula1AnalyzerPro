@@ -17,6 +17,7 @@ status = pd.read_csv('f1_data/status.csv')
 
 # Merge all important driver data together.
 def mergeDriverData (driver):
+
     # Merges the driver_standings table and the drivers table on the driverId column
     driver_performance = pd.merge(driver_standings, drivers, on='driverId')
 
@@ -32,7 +33,21 @@ def mergeDriverData (driver):
     # Gets the driver performance stats based on surname
     # !! returns every driver with the same last name--find future fix
     performance = driver_performance[(driver_performance['surname'] == driver)].copy()
-    print(performance.to_string())
 
-def specifyDriverName():
-    if
+    # Sorts the dataset by the forename
+    performance = performance.sort_values('forename')
+
+    # Compares each name to the previous name to see if it is equal. If it is not
+    # equal it returns false.
+    performance['match'] = performance.forename.eq(performance.forename.shift())
+
+    # Dataframe is created to only hold the data of the names of drivers that have same
+    # surname but different forename
+    filtered_df = performance[performance['match'] == False]
+    print(filtered_df[['surname', 'forename']])
+            #return value
+
+
+
+
+
