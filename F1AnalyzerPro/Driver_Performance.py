@@ -31,7 +31,6 @@ def mergeDriverData (driver):
     driver_performance.pop('url')
 
     # Gets the driver performance stats based on surname
-    # !! returns every driver with the same last name--find future fix
     performance = driver_performance[(driver_performance['surname'] == driver)].copy()
 
     # Sorts the dataset by the forename
@@ -44,10 +43,19 @@ def mergeDriverData (driver):
     # Dataframe is created to only hold the data of the names of drivers that have same
     # surname but different forename
     filtered_df = performance[performance['match'] == False]
-    print(filtered_df[['surname', 'forename']])
-            #return value
 
+    # Gets the number of names by getting the amount of rows
+    number_of_names = len(filtered_df)
 
+    print(filtered_df[['forename']])
 
+    # Prompting the user for input and storing it in a variable
+    if number_of_names > 1:
+        name_select = input("There are multiple people with this surname select a name from the above list: ")
+        # Displays only the input value drivers
+        name_select = name_select.capitalize()
+        performance = performance.loc[performance['forename'] == name_select]
 
+     #print(performance.eq(name_select.eq))
 
+    print(performance.to_string())

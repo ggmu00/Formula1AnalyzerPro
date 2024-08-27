@@ -15,24 +15,5 @@ seasons = pd.read_csv('f1_data/seasons.csv')
 sprint_results = pd.read_csv('f1_data/sprint_results.csv')
 status = pd.read_csv('f1_data/status.csv')
 
-#circuitIDs------figure out how to automate this in the future
-circuitID_Australia = 1
-circuitID_Malaysia = 2
-circuitID_Bahrain = 3
-circuitID_Spain = 4
-circuitID_Turkey = 5
-circuitID_Monaco = 6
-circuitID_Canada = 7
-circuitID_France = 8
-circuitID_UK = 9
-
-
-
-#first_100_rows_results = pd.read_csv('f1_data/constructors.csv', nrows=100)
-
-
-#australiaGP_races = races[races['circuitId'] == circuitID_Australia]
-
-#print(first_100_rows_results.to_string())
-
-mergeDriverData('Hamilton')
+name_input = input("Enter a surname to see all driver performance data: ").capitalize()
+mergeDriverData(name_input)
