@@ -9,7 +9,7 @@ drivers = pd.read_csv('f1_data/drivers.csv')
 races = pd.read_csv('f1_data/races.csv')
 
 # Merge all important driver data together.
-def mergeDriverData (driver):
+def viewMajorDriverData (driver):
 
     # Merges the driver_standings table and the drivers table on the driverId column
     driver_performance = pd.merge(driver_standings, drivers, on='driverId')
