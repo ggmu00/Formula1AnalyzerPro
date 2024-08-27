@@ -1,7 +1,4 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import numpy as np
+from Driver_Performance import *
 
 # Load in the data sets
 circuits = pd.read_csv('f1_data/circuits.csv')
@@ -31,17 +28,11 @@ circuitID_UK = 9
 
 
 
-first_100_rows_results = pd.read_csv('f1_data/constructors.csv', nrows=100)
+#first_100_rows_results = pd.read_csv('f1_data/constructors.csv', nrows=100)
 
 
 #australiaGP_races = races[races['circuitId'] == circuitID_Australia]
 
-print(first_100_rows_results.to_string())
+#print(first_100_rows_results.to_string())
 
-# Merge data to get driver standings by year
-driver_performance = pd.merge(driver_standings, drivers, on='driverId')
-driver_performance = pd.merge(driver_performance, races, on='raceId')
-
-
-
-
+mergeDriverData('')
