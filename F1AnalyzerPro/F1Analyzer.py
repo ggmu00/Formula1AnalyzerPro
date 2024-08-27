@@ -16,11 +16,11 @@ seasons = pd.read_csv('f1_data/seasons.csv')
 sprint_results = pd.read_csv('f1_data/sprint_results.csv')
 status = pd.read_csv('f1_data/status.csv')
 
-#selection_input = input("Type 'C' to browse constuctor data or 'D' to visualize driver data: ").capitalize()
+selection_input = input("Type 'C' to browse constuctor data or 'D' to visualize driver data: ").capitalize()
 
-#if selection_input == "C":
-    #name_input = input("Enter a constructor name to see all driver performance data: ").capitalize()
-viewMajorConstructorData('Renault')
-#elif selection_input == "D":
- #   name_input = input("Enter a surname to see all driver performance data: ").capitalize()
-  #  viewMajorDriverData(name_input)
+if selection_input == "C":
+    name_input = input("Enter a constructor name to see all driver performance data: ").capitalize()
+    viewMajorConstructorData(name_input)
+elif selection_input == "D":
+    name_input = input("Enter a surname to see all driver performance data: ").capitalize()
+    viewMajorDriverData(name_input)
