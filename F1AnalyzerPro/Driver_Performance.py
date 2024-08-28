@@ -111,11 +111,14 @@ def driverPerformanceByYear(driver):
     # Prompting the user for input and storing it in a variable
     if number_of_names > 1:
         name_select = input("There are multiple people with this surname select a name from the above list: ")
+
         # Displays only the input value drivers
         name_select = name_select.capitalize()
         performance = performance.loc[performance['forename'] == name_select]
 
+    # Sort data by date
     performance = performance.sort_values('date')
 
-    
+    performance['matchYear'] = performance.year.eq(performance.year.shift())
+
     print(performance.to_string())

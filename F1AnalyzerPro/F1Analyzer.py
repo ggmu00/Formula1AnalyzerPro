@@ -23,4 +23,5 @@ if selection_input == "C":
     viewMajorConstructorData(name_input)
 elif selection_input == "D":
     name_input = input("Enter a surname to see all driver performance data: ").capitalize()
-    viewMajorDriverData(name_input)
+    #viewMajorDriverData(name_input)
+    driverPerformanceByYear(name_input)
