@@ -20,8 +20,14 @@ selection_input = input("Type 'C' to browse constuctor data or 'D' to visualize 
 
 if selection_input == "C":
     name_input = input("Enter a constructor name to see all driver performance data: ").capitalize()
+
+    #View all major constructor data throughout the years for a specified constructor
     viewMajorConstructorData(name_input)
 elif selection_input == "D":
     name_input = input("Enter a surname to see all driver performance data: ").capitalize()
+
+    #View all major driver data throughout the years for a specified driver
     #viewMajorDriverData(name_input)
-    driverPerformanceByYear(name_input)
+
+    #Get the amount of points the driver had at the end of each yearyear
+    driverFinalPointsByYear(name_input)

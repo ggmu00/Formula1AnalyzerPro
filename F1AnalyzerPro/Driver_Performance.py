@@ -68,7 +68,7 @@ def viewMajorDriverData (driver):
     plt.ylabel('Championship Standing Position')
     plt.show()
 
-def driverPerformanceByYear(driver):
+def driverFinalPointsByYear(driver):
 
     # Merges the driver_standings table and the drivers table on the driverId column
     driver_performance = pd.merge(driver_standings, drivers, on='driverId')
@@ -119,11 +119,16 @@ def driverPerformanceByYear(driver):
     # Sort data by date
     performance = performance.sort_values('date')
 
-    # Compares each name to the previous name to see if it is equal. If it is not
-    # equal it returns false.
-    #performance['matchYear'] = performance.year.eq(performance.year.shift())
-
     #Sum the points by year
     result = performance.groupby('year')['points'].tail(1)
 
     print(result.to_string())
+
+    plt.figure(figsize=(10, 5))
+    sns.lineplot(data=performance, x='year', y='position', marker='o')
+    plt.title("Driver's Points By Year")
+    plt.gca().invert_yaxis()  # Lower number is better (1st place is better than 10th)
+    plt.xticks(performance['year'].unique())  # Ensure one-year gaps
+    plt.xlabel('Year')
+    plt.ylabel('Championship Standing Position')
+    plt.show()
