@@ -55,6 +55,7 @@ def getSpecificDriver(driver):
 # Merge all important driver data together.
 def viewMajorDriverData (driver):
 
+    # Call the function to get specific driver data
     performance = getSpecificDriver(driver)
 
     performance = performance.sort_values('date')
