@@ -32,14 +32,5 @@ def userInput():
         driverFinalPointsByYear(name_input)
 
 
-def driverNameCheck(driver: str) -> bool:
-    name_check = getSpecificDriver(driver)
 
-    filtered_df_first_3_letters = name_check[name_check['surname'].str.contains(driver[:3])]
-    filtered_df_last_3_letters = name_check[name_check['surname'].str.contains(driver[-3:])]
-
-    if driver == viewMajorDriverData(driver):
-        return True
-    else:
-        return False
 

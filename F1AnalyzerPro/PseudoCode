@@ -1,0 +1,19 @@
+This file will be updated as needed, this is for my own working reference, code will be added and
+removed as I go.
+
+
+SearchData
+
+function userInput()
+    var input = input a letter to see driver or constructor data
+
+    if the input is "C" then
+        var constructorInput = input the name of the constructor you want to see data for
+        constructorDataFunction
+    else if the input is "D" then
+        var driverInput = input the name of the driver you want to see data for
+        check if the name exists
+            if yes continue
+            if no suggest possible names that are similar...................BUT HOW
+
+        driverDataFunction
