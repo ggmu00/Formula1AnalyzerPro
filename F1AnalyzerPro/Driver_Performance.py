@@ -119,6 +119,11 @@ def driverPerformanceByYear(driver):
     # Sort data by date
     performance = performance.sort_values('date')
 
-    performance['matchYear'] = performance.year.eq(performance.year.shift())
+    # Compares each name to the previous name to see if it is equal. If it is not
+    # equal it returns false.
+    #performance['matchYear'] = performance.year.eq(performance.year.shift())
 
-    print(performance.to_string())
+    #Sum the points by year
+    result = performance.groupby('year')['points'].tail(1)
+
+    print(result.to_string())
