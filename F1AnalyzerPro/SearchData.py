@@ -31,6 +31,35 @@ def userInput():
         #Get the amount of points the driver had at the end of each year
         driverFinalPointsByYear(name_input)
 
+def driverNameCheck(driver):
+    #name_check = getSpecificDriver(driver)
+    name_input = ""
+    count =0
+
+    while count == 0:
+        if driver in getSpecificDriver(driver).values:
+            count = count + 1
+            return driver
+        elif driver[:3] in getSpecificDriver(driver).values[:3]:
+            temp_df = getSpecificDriver(driver)[(getSpecificConstructor(driver)['surname'] == driver[:3])].copy()
+            temp_df = temp_df['matchName'] = temp_df.forename.eq(temp_df.forename.shift())
+            filtered_df = temp_df[temp_df['matchName']==True]
+            print(filtered_df)
+            name_input = input("Select your driver from the list above: ")
+            count = count + 1
+            return name_input
+        elif driver[-3:] in getSpecificDriver(driver).values[-3:]:
+            temp_df = getSpecificDriver(driver)[(getSpecificConstructor(driver)['surname'] == driver[-3:])].copy()
+            temp_df = temp_df['matchName'] = temp_df.forename.eq(temp_df.forename.shift())
+            filtered_df = temp_df[temp_df['matchName']==True]
+            print(filtered_df)
+            name_input = input("Select your driver from the list above: ")
+            count = count + 1
+            return name_input
+        else:
+            name_input = input("Please input the name again: ")
+
+
 
 
 

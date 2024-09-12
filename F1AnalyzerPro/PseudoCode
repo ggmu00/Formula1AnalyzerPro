@@ -17,3 +17,25 @@ function userInput()
             if no suggest possible names that are similar...................BUT HOW
 
         driverDataFunction
+
+function checkNames(name_input)
+
+    while(counter=0)
+    if  name_input equals a driver name
+        counter+1
+        return driver name
+    elif first three letters of name_input are same as a driver in df
+        print all drivers with same first three letters
+        ask user to pick one
+        counter +1
+        return input
+    elif last three letters of name_input are same
+        print all drivers with same last three letters
+        ask user to pick one
+        counter+1
+        return input
+    else
+        ask the user to input the name again
+        start over necessary
+
+
