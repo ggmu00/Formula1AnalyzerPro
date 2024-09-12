@@ -8,3 +8,38 @@ from Driver_Performance import *
 from Constructor_Performance import *
 
 
+def userInput():
+    selection_input = input("Type 'C' to browse constuctor data or 'D' to visualize driver data: ").capitalize()
+
+    if selection_input == "C":
+        name_input = input("Enter a constructor name to see all driver performance data: ").capitalize()
+
+        #View all major constructor data throughout the years for a specified constructor
+        viewMajorConstructorData(name_input)
+
+        # Get the amount of points the constructor had at the end of each year
+        constructorFinalPointsByYear(name_input)
+
+    elif selection_input == "D":
+        name_input = input("Enter a surname to see all driver performance data: ").capitalize()
+
+        #View all major driver data throughout the years for a specified driver
+        #viewMajorDriverData(name_input)
+
+        driverNameCheck(name_input)
+
+        #Get the amount of points the driver had at the end of each year
+        driverFinalPointsByYear(name_input)
+
+
+def driverNameCheck(driver: str) -> bool:
+    name_check = getSpecificDriver(driver)
+
+    filtered_df_first_3_letters = name_check[name_check['surname'].str.contains(driver[:3])]
+    filtered_df_last_3_letters = name_check[name_check['surname'].str.contains(driver[-3:])]
+
+    if driver == viewMajorDriverData(driver):
+        return True
+    else:
+        return False
+
