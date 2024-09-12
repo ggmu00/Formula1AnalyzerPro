@@ -33,6 +33,7 @@ def getSpecificDriver(driver):
     # Sorts the dataset by the forename
     performance = performance.sort_values('forename')
 
+
     # Compares each name to the previous name to see if it is equal. If it is not
     # equal it returns false.
     performance['matchName'] = performance.forename.eq(performance.forename.shift())
@@ -41,15 +42,22 @@ def getSpecificDriver(driver):
     # surname but different forename
     filtered_df = performance[performance['matchName'] == False]
 
+
     # Gets the number of names by getting the amount of rows
     number_of_names = len(filtered_df)
 
     # Prompting the user for input and storing it in a variable
     if number_of_names > 1:
+
+        # Print drivers with same surname
+        print(filtered_df[['forename']])
+
         name_select = input("There are multiple people with this surname select a name from the above list: ")
+
         # Displays only the input value drivers
         name_select = name_select.capitalize()
         performance = performance.loc[performance['forename'] == name_select]
+
     return performance
 
 # Merge all important driver data together.
