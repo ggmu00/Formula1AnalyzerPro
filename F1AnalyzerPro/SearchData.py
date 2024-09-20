@@ -50,41 +50,11 @@ def userInput():
                         driverFinalPointsByYear(name_input)
                     elif check2 == "N":
                         check3 = input("Please try again")
+            else:
+
 
         #firstThreeLettersMatch(name_input)
         #getSpecificDriver(lastThreeLettersMatch(name_input))
 
         #Get the amount of points the driver had at the end of each year
         #driverFinalPointsByYear(name_input)
-
-
-def driverNameCheck(driver):
-    """ driver_df = getSpecificDriver(driver)
-    name_input = ""
-    print("tahdah")
-    first_3_letters_check = driver_df[driver_df["surname"].str.contains(driver[:3])]
-
-    print(first_3_letters_check)
-
-    if driver in getSpecificDriver(driver).values:
-        print("work")
-        return driver
-    elif driver[:3] in first_3_letters_check.values:
-        print(first_3_letters_check)
-        #getSpecificDriver(driver)
-        # getSpecificDriver(driver_first_3)
-        # print(name_check)
-        #name_input = input("Select your driver from the list above: ")
-        #return name_input
-    elif driver[-3:] in getSpecificDriver(driver).values[-3:]:
-        temp_df = getSpecificDriver(driver)[(getSpecificConstructor(driver)['surname'] == driver[-3:])].copy()
-        temp_df = temp_df['matchName'] = temp_df.forename.eq(temp_df.forename.shift())
-        filtered_df = temp_df[temp_df['matchName']==True]
-        print(filtered_df)
-        name_input = input("Select your driver from the list above: ")
-        return name_input
-    else:
-        name_input = input("Please input the name again: ")
-        return name_input
-
-        """
