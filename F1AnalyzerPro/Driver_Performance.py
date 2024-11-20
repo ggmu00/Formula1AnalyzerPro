@@ -28,36 +28,32 @@ driver_performance.pop('raceId')
 
 
 def getSpecificDriver(driver):
-    # Gets the driver performance stats based on surname
-    performance = driver_performance[(driver_performance['surname'] == driver)].copy()
+    # Filter the performance data for the driver based on the surname
+    performance = driver_performance[driver_performance['surname'].str.lower() == driver.lower()]
 
-    # Sorts the dataset by the forename
-    performance = performance.sort_values('forename')
+    # Sort the dataset by forename and reset index
+    performance = performance.sort_values('forename').reset_index(drop=True)
 
-    # Compares each name to the previous name to see if it is equal. If it is not
-    # equal it returns false.
-    performance['matchName'] = performance.forename.eq(performance.forename.shift())
+    # Find unique forenames for the same surname
+    unique_forenames = performance['forename'].unique()
 
-    # Dataframe is created to only hold the data of the names of drivers that have same
-    # surname but different forename
-    filtered_df = performance[performance['matchName'] == False]
+    # If there are multiple drivers with the same surname, ask the user to select a forename
+    if len(unique_forenames) > 1:
+        print("There are multiple drivers with this surname. Please choose one from the list:")
+        print(unique_forenames)
 
-    # Gets the number of names by getting the amount of rows
-    number_of_names = len(filtered_df)
+        # Get user input and handle case-insensitive selection
+        name_select = input("Select a name: ").strip().capitalize()
 
-    # Prompting the user for input and storing it in a variable
-    if number_of_names > 1:
-        # Print drivers with same surname
-        print(filtered_df[['forename']])
+        # Ensure the input matches one of the forenames
+        while name_select not in unique_forenames:
+            print("Invalid selection. Please choose a name from the list.")
+            name_select = input("Select a name: ").strip().capitalize()
 
-        name_select = input("There are multiple people with this surname select a name from the above list: ")
-
-        # Displays only the input value drivers
-        name_select = name_select.capitalize()
-        performance = performance.loc[performance['forename'] == name_select]
+        # Filter performance data for the selected forename
+        performance = performance[performance['forename'] == name_select]
 
     return performance
-
 
 # Merge all important driver data together.
 def viewMajorDriverData(driver):
@@ -82,10 +78,7 @@ def driverFinalPointsByYear(driver):
     performance = getSpecificDriver(driver)
 
     # Create dataframe with only the year and points specified
-    performance = performance[['year', 'points']]
-
-    # Sort data by year
-    performance = performance.sort_values('year')
+    performance = performance[['year', 'points']].sort_values('year')
 
     # Get final points by year
     result = performance.groupby('year').tail(1)
@@ -104,62 +97,33 @@ def driverFinalPointsByYear(driver):
 
 def firstThreeLettersMatch(driver):
     # Setting the driver variable to the first three characters of the name
-    driver = driver[:3]
+    driver_prefix = driver[:3].lower()  # Convert to lowercase for case-insensitive matching
 
-    first_3_check = driver_performance
-    first_3_check['f3c'] = driver_performance['surname'].str.contains(driver)
-    last_3_filtered = first_3_check[first_3_check['f3c']]
+    # Filter drivers whose surname contains the first three letters of the input driver name (case-insensitive)
+    first_3_check = driver_performance[driver_performance['surname'].str.contains(driver_prefix, case=False, na=False)]
 
-    # Sorts the dataset by the forename
-    performance = last_3_filtered.sort_values('forename')
+    # Sorts the dataset by forename to make comparison easier
+    performance = first_3_check.sort_values('forename')
 
-    # Compares each name to the previous name to see if it is equal. If it is not
-    # equal it returns false.
-    performance['matchName'] = performance.forename.eq(performance.forename.shift())
+    # Filter drivers that have the same surname but different forenames
+    filtered_df = performance[performance['forename'].ne(performance['forename'].shift())]
 
-    # Dataframe is created to only hold the data of the names of drivers that have same
-    # surname but different forename
-    filtered_df = performance[performance['matchName'] == False]
-
-    # Compares each name to the previous name to see if it is equal. If it is not
-    # equal it returns false.
-    performance['matchName2'] = performance.surname.eq(performance.surname.shift())
-
-    # Dataframe is created to only hold the data of the names of drivers that have same
-    # surname but different forename
-    filtered_df = performance[performance['matchName2'] == False]
-
-    # Print drivers with same surname
-    print(filtered_df[['surname']])
+    # Print out the drivers with the same surname but different forenames
+    print(filtered_df[['surname', 'forename']])  # Showing forename and surname for clarity
 
 
 def lastThreeLettersMatch(driver):
-    # Setting the driver variable to the last three characters of the name
-    driver = driver[-3:]
+    # Set the driver variable to the last three characters of the name
+    driver_suffix = driver[-3:].lower()  # Convert to lowercase for case-insensitive matching
 
-    last_3_check = driver_performance
-    last_3_check['f3c'] = driver_performance['surname'].str.contains(driver)
-    last_3_filtered = last_3_check[last_3_check['f3c']]
+    # Filter drivers whose surname contains the last three letters of the input driver name (case-insensitive)
+    last_3_check = driver_performance[driver_performance['surname'].str.contains(driver_suffix, case=False, na=False)]
 
-    # Sorts the dataset by the forename
-    performance = last_3_filtered.sort_values('forename')
+    # Sort the dataset by forename for easier comparison
+    performance = last_3_check.sort_values('forename')
 
-    # Compares each name to the previous name to see if it is equal. If it is not
-    # equal it returns false.
-    performance['matchName'] = performance.forename.eq(performance.forename.shift())
+    # Filter out drivers with the same surname and same forename (no need to use shift() twice)
+    filtered_df = performance[performance['forename'].ne(performance['forename'].shift())]
 
-    # Dataframe is created to only hold the data of the names of drivers that have same
-    # surname but different forename
-    filtered_df = performance[performance['matchName'] == False]
-
-    # Compares each name to the previous name to see if it is equal. If it is not
-    # equal it returns false.
-    performance['matchName2'] = performance.surname.eq(performance.surname.shift())
-
-    # Dataframe is created to only hold the data of the names of drivers that have same
-    # surname but different forename
-    filtered_df = performance[performance['matchName2'] == False]
-
-    # Print drivers with same surname
-    print(filtered_df[['surname']])
-
+    # Print drivers with the same surname but different forenames
+    print(filtered_df[['surname', 'forename']])  # Printing both surname and forename for clarity

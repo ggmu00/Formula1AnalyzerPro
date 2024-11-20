@@ -26,35 +26,33 @@ def userInput():
         #View all major driver data throughout the years for a specified driver
         #viewMajorDriverData(name_input)
 
-
-
         # This sets the driver data to the function getFinalPointsByYear;
         # in the future change to pick the data the user wants to see
-
-        check3 = ""
-
-        while check3 == "":
-            if name_input not in getSpecificDriver(name_input):
-                firstThreeLettersMatch(name_input)
-                check = input("Do you see the name you were meaning?(Y/N)").capitalize()
-                if check == "Y":
-                    name_input = input("Please enter the name exactly as you see in the above list:")
-                    check3 = name_input
-                    driverFinalPointsByYear(name_input)
-                elif check == "N":
-                    lastThreeLettersMatch(name_input)
-                    check2 = input("Do you see the name you were meaning?(Y/N)")
-                    if check2 == "Y":
-                        name_input = input("Please enter the name exactly as you see in the above list:")
-                        check3 = name_input
-                        driverFinalPointsByYear(name_input)
-                    elif check2 == "N":
-                        check3 = input("Please try again")
-            else:
-
 
         #firstThreeLettersMatch(name_input)
         #getSpecificDriver(lastThreeLettersMatch(name_input))
 
         #Get the amount of points the driver had at the end of each year
         #driverFinalPointsByYear(name_input)
+
+        driverFinalPointsByYear(driverNameCheck(name_input))
+
+
+def driverNameCheck(driver):
+    if driver in getSpecificDriver(driver):
+        return driver
+    else:
+        firstThreeLettersMatch(driver)
+        check = input("Do you see the name you were meaning?(Y/N)").capitalize()
+        if check == "Y":
+            name_input = input("Please enter the name exactly as you see in the above list:")
+            driverNameCheck(name_input)
+        elif check == "N":
+            lastThreeLettersMatch(driver)
+            check2 = input("Do you see the name you were meaning?(Y/N)")
+            if check2 == "Y":
+                name_input = input("Please enter the name exactly as you see in the above list:")
+                driverNameCheck(name_input)
+            elif check2 == "N":
+                name_input = input("Please enter the name again:")
+                driverNameCheck(name_input)
