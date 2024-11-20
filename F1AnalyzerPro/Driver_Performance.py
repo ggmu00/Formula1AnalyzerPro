@@ -60,21 +60,18 @@ def getSpecificDriver(driver):
 
 
 # Merge all important driver data together.
-def viewMajorDriverData(driver):
+def viewLifetimeDriverPoints(driver):
     # Call the function to get specific driver data
+    # Get specific driver performance data
     performance = getSpecificDriver(driver)
 
-    performance = performance.sort_values('date')
-    print(performance.to_string())
+    # Create a dataframe with only relevant columns
+    performance = performance[['year', 'points', 'date']]
 
-    plt.figure(figsize=(10, 5))
-    sns.lineplot(data=performance, x='year', y='position', marker='o')
-    plt.title("Driver's Performance Over Time")
-    plt.gca().invert_yaxis()  # Lower number is better (1st place is better than 10th)
-    plt.xticks(performance['year'].unique())  # Ensure one-year gaps
-    plt.xlabel('Year')
-    plt.ylabel('Championship Standing Position')
-    plt.show()
+    # Get the last row for each year based on the maximum date (final points by year)
+    result = performance.loc[performance.groupby('year')['date'].idxmax(), ['year', 'points']]
+    total_points = result['points'].sum()
+    print(total_points)
 
 
 def driverFinalPointsByYear(driver):
