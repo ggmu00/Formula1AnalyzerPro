@@ -29,11 +29,7 @@ def userInput():
         # This sets the driver data to the function getFinalPointsByYear;
         # in the future change to pick the data the user wants to see
 
-        #firstThreeLettersMatch(name_input)
-        #getSpecificDriver(lastThreeLettersMatch(name_input))
-
         #Get the amount of points the driver had at the end of each year
-        #driverFinalPointsByYear(name_input)
+        driverFinalPointsByYear(name_input)
+        #print(getSpecificDriver(name_input).to_string())
 
-        print(getSpecificDriver(name_input))
-            #driverNameCheck(name_input))

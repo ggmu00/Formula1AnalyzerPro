@@ -1,4 +1,3 @@
-
 from SearchData import *
 
 # Load in the data sets
@@ -15,6 +14,5 @@ results = pd.read_csv('f1_data/results.csv')
 seasons = pd.read_csv('f1_data/seasons.csv')
 sprint_results = pd.read_csv('f1_data/sprint_results.csv')
 status = pd.read_csv('f1_data/status.csv')
-
 
 userInput()

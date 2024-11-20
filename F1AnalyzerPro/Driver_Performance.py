@@ -54,7 +54,7 @@ def getSpecificDriver(driver):
 
         # Displays only the input value drivers
         name_select = name_select.capitalize()
-        performance = performance.loc[performance['forename'] == name_select]
+        performance = performance.loc[performance['forename'] == name_select].sort_values('date')
 
     return performance
 
@@ -79,20 +79,21 @@ def viewMajorDriverData(driver):
 
 def driverFinalPointsByYear(driver):
     # Call the function to get specific driver data
+    # Get specific driver performance data
     performance = getSpecificDriver(driver)
 
-    # Create dataframe with only the year and points specified
-    performance = performance[['year', 'points']].sort_values('year')
+    # Create a dataframe with only relevant columns
+    performance = performance[['year', 'points', 'date']]
 
-    # Get final points by year
-    result = performance.groupby('year').tail(1)
+    # Get the last row for each year based on the maximum date (final points by year)
+    result = performance.loc[performance.groupby('year')['date'].idxmax(), ['year', 'points']]
 
     print(result.to_string())
 
     plt.figure(figsize=(10, 5))
     sns.lineplot(data=performance, x='year', y='points', marker='o')
     plt.title("Driver's Points By Year")
-    plt.gca().invert_yaxis()  # Lower number is better (1st place is better than 10th)
+    #plt.gca().invert_yaxis()  # Lower number is better (1st place is better than 10th)
     plt.xticks(performance['year'].unique())  # Ensure one-year gaps
     plt.xlabel('Year')
     plt.ylabel('Championship Standing Position')
