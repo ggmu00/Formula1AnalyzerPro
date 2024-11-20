@@ -35,24 +35,5 @@ def userInput():
         #Get the amount of points the driver had at the end of each year
         #driverFinalPointsByYear(name_input)
 
-        driverFinalPointsByYear(driverNameCheck(name_input))
-
-
-def driverNameCheck(driver):
-    if driver in getSpecificDriver(driver):
-        return driver
-    else:
-        firstThreeLettersMatch(driver)
-        check = input("Do you see the name you were meaning?(Y/N)").capitalize()
-        if check == "Y":
-            name_input = input("Please enter the name exactly as you see in the above list:")
-            driverNameCheck(name_input)
-        elif check == "N":
-            lastThreeLettersMatch(driver)
-            check2 = input("Do you see the name you were meaning?(Y/N)")
-            if check2 == "Y":
-                name_input = input("Please enter the name exactly as you see in the above list:")
-                driverNameCheck(name_input)
-            elif check2 == "N":
-                name_input = input("Please enter the name again:")
-                driverNameCheck(name_input)
+        print(getSpecificDriver(name_input))
+            #driverNameCheck(name_input))
