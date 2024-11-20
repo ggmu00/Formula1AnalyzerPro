@@ -28,32 +28,36 @@ driver_performance.pop('raceId')
 
 
 def getSpecificDriver(driver):
-    # Filter the performance data for the driver based on the surname
-    performance = driver_performance[driver_performance['surname'].str.lower() == driver.lower()]
+    # Gets the driver performance stats based on surname
+    performance = driver_performance[(driver_performance['surname'] == driver)].copy()
 
-    # Sort the dataset by forename and reset index
-    performance = performance.sort_values('forename').reset_index(drop=True)
+    # Sorts the dataset by the forename
+    performance = performance.sort_values('forename')
 
-    # Find unique forenames for the same surname
-    unique_forenames = performance['forename'].unique()
+    # Compares each name to the previous name to see if it is equal. If it is not
+    # equal it returns false.
+    performance['matchName'] = performance.forename.eq(performance.forename.shift())
 
-    # If there are multiple drivers with the same surname, ask the user to select a forename
-    if len(unique_forenames) > 1:
-        print("There are multiple drivers with this surname. Please choose one from the list:")
-        print(unique_forenames)
+    # Dataframe is created to only hold the data of the names of drivers that have same
+    # surname but different forename
+    filtered_df = performance[performance['matchName'] == False]
 
-        # Get user input and handle case-insensitive selection
-        name_select = input("Select a name: ").strip().capitalize()
+    # Gets the number of names by getting the amount of rows
+    number_of_names = len(filtered_df)
 
-        # Ensure the input matches one of the forenames
-        while name_select not in unique_forenames:
-            print("Invalid selection. Please choose a name from the list.")
-            name_select = input("Select a name: ").strip().capitalize()
+    # Prompting the user for input and storing it in a variable
+    if number_of_names > 1:
+        # Print drivers with same surname
+        print(filtered_df[['forename']])
 
-        # Filter performance data for the selected forename
-        performance = performance[performance['forename'] == name_select]
+        name_select = input("There are multiple people with this surname select a name from the above list: ")
+
+        # Displays only the input value drivers
+        name_select = name_select.capitalize()
+        performance = performance.loc[performance['forename'] == name_select]
 
     return performance
+
 
 # Merge all important driver data together.
 def viewMajorDriverData(driver):
