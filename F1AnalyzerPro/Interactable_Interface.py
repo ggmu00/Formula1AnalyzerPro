@@ -1,47 +1,81 @@
-import tkinter as tk
-from tkinter import messagebox
-import pandas as pd
-from Driver_Performance import *
+from flask import Flask, request, render_template_string
+from Driver_Performance import *  # Import all functions
+import pandas as pd  # Ensure pandas is imported
+
+app = Flask(__name__)
+
+# HTML template for the web page
+HTML_TEMPLATE = """
+<!doctype html>
+<html lang="en">
+<style>
+        /* Zebra stripe styling for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        tr:nth-child(odd) {
+            background-color: #f2f2f2;  /* Light gray for odd rows */
+        }
+        tr:nth-child(even) {
+            background-color: #ffffff;  /* White for even rows */
+        }
+        /* Add a hover effect on rows */
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Script</title>
+</head>
+<body>
+    <h1>Enter a Name</h1>
+    <form method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Submit</button>
+    </form>
+    {% if output %}
+        <h2>Points by Year for {{ name }}</h2>  <!-- Dynamic Title -->
+        <div>{{ output|safe }}</div>
+    {% endif %}
+</body>
+</html>
+"""
+
+@app.route('/', methods=['GET', 'POST'])
+def run_function():
+    output = None
+    name = None  # Initialize name variable to be passed to the template
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        name = name.capitalize()
+        if not name:
+            return render_template_string(HTML_TEMPLATE, output="Error: Name is required.", name=name)
+        try:
+            # Call the imported function and pass the name as an argument
+            function_output = viewLifetimeDriverPointsByYear(name)
+
+            if isinstance(function_output, pd.DataFrame):
+                # Convert the DataFrame to an HTML table
+                output = function_output.to_html(classes='table table-striped', index=False)
+            elif isinstance(function_output, (list, dict)):
+                # Format the output for display if it is complex data
+                import json
+                output = json.dumps(function_output, indent=4)
+            else:
+                output = str(function_output)
+        except Exception as e:
+            output = f"An error occurred: {str(e)}"
+    return render_template_string(HTML_TEMPLATE, output=output, name=name)
 
 
-# Function to search for the points of the given name
-def search_points():
-    name_input = entry.get().strip()  # Get the name from the text input box
-    driver_total_points = viewLifetimeDriverPoints(name_input)
-    if name_input:
-        # Filter the data for the entered name
-        person_data = driver_total_points[driver_performance['name'].str.lower() == name_input.lower()]
-
-        if not person_data.empty:
-            # Get the last entry for the person in each year based on the maximum date
-            result = person_data.loc[person_data.groupby('year')['date'].idxmax(), ['year', 'points']]
-
-            # Calculate the total points for the person
-            total_points = result['points'].sum()
-
-            # Display the result in a message box
-            messagebox.showinfo("Total Points", f"{name_input}'s Total Points: {total_points}")
-        else:
-            # Display a message box if no data found
-            messagebox.showwarning("No Data", f"No data found for {name_input}.")
-    else:
-        # Display a message box if the name input is empty
-        messagebox.showwarning("Input Error", "Please enter a name to search.")
-
-
-# Set up the main window
-root = tk.Tk()
-root.title("Data Analysis App")
-
-# Create and pack the widgets
-label = tk.Label(root, text="Enter Name to Search:")
-label.pack(pady=10)
-
-entry = tk.Entry(root, width=30)
-entry.pack(pady=5)
-
-search_button = tk.Button(root, text="Search Points", command=search_points)
-search_button.pack(pady=20)
-
-# Run the application
-root.mainloop()
+if __name__ == '__main__':
+    app.run(debug=True)

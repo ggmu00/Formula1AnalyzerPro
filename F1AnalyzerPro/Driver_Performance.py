@@ -60,7 +60,8 @@ def getSpecificDriver(driver):
 
 
 # Merge all important driver data together.
-def viewLifetimeDriverPoints(driver):
+def viewLifetimeDriverPointsByYear(driver):
+
     # Call the function to get specific driver data
     # Get specific driver performance data
     performance = getSpecificDriver(driver)
@@ -70,8 +71,8 @@ def viewLifetimeDriverPoints(driver):
 
     # Get the last row for each year based on the maximum date (final points by year)
     result = performance.loc[performance.groupby('year')['date'].idxmax(), ['year', 'points']]
-    total_points = result['points'].sum()
-    print(total_points)
+    print(result.to_string())
+    return result
 
 
 def driverFinalPointsByYear(driver):
