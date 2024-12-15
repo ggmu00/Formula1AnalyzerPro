@@ -99,7 +99,6 @@ HTML_TEMPLATE = """
         <button type="submit">Submit</button>
         <!-- Suggestions dropdown container -->
         <div id="suggestions-container"></div>
-        
     </form>
     {% if output %}
         <h2>Points by Year for {{ name }}</h2>  <!-- Dynamic Title -->
@@ -107,6 +106,7 @@ HTML_TEMPLATE = """
     {% endif %}
 </body>
 </html>
+
 """
 
 @app.route('/autocomplete')
@@ -128,7 +128,7 @@ def run_function():
             return render_template_string(HTML_TEMPLATE, output="Error: Surname is required.", name=name)
         try:
             # Call the imported function and pass the surname as an argument
-            function_output = viewLifetimeDriverPointsByYear(name)
+            function_output = viewFinalDriverPointsByYear(name)
 
             if isinstance(function_output, pd.DataFrame):
                 # Convert the DataFrame to an HTML table

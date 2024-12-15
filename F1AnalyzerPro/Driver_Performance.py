@@ -46,21 +46,21 @@ def getSpecificDriver(driver):
     number_of_names = len(filtered_df)
 
     # Prompting the user for input and storing it in a variable
-    if number_of_names > 1:
-        # Print drivers with same surname
-        print(filtered_df[['forename']])
-
-        name_select = input("There are multiple people with this surname select a name from the above list: ")
-
-        # Displays only the input value drivers
-        name_select = name_select.capitalize()
-        performance = performance.loc[performance['forename'] == name_select].sort_values('date')
-
+    # if number_of_names > 1:
+    #     # Print drivers with same surname
+    #     print(filtered_df[['forename']])
+    #
+    #     name_select = input("There are multiple people with this surname select a name from the above list: ")
+    #
+    #     # Displays only the input value drivers
+    #     name_select = name_select.capitalize()
+    #     performance = performance.loc[performance['forename'] == name_select].sort_values('date')
+    print(performance.to_string())
     return performance
 
 
 # Merge all important driver data together.
-def viewLifetimeDriverPointsByYear(driver):
+def viewFinalDriverPointsByYear(driver):
 
     # Call the function to get specific driver data
     # Get specific driver performance data
@@ -71,7 +71,7 @@ def viewLifetimeDriverPointsByYear(driver):
 
     # Get the last row for each year based on the maximum date (final points by year)
     result = performance.loc[performance.groupby('year')['date'].idxmax(), ['year', 'points']]
-    #print(result.to_string())
+    print(result.to_string())
     return result
 
 
@@ -94,5 +94,5 @@ def driverFinalPointsByYear(driver):
     #plt.gca().invert_yaxis()  # Lower number is better (1st place is better than 10th)
     plt.xticks(performance['year'].unique())  # Ensure one-year gaps
     plt.xlabel('Year')
-    plt.ylabel('Championship Standing Position')
+    plt.ylabel('Final Driver Points by Year')
     plt.show()
