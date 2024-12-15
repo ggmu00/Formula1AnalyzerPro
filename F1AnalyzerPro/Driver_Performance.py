@@ -71,7 +71,7 @@ def viewLifetimeDriverPointsByYear(driver):
 
     # Get the last row for each year based on the maximum date (final points by year)
     result = performance.loc[performance.groupby('year')['date'].idxmax(), ['year', 'points']]
-    print(result.to_string())
+    #print(result.to_string())
     return result
 
 
