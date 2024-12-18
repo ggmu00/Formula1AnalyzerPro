@@ -95,6 +95,7 @@ DRIVER_TEMPLATE = """
     <h1>Driver Performance</h1>
     <button onclick="window.location.href='/'">Home</button>
     <button onclick="window.location.href='/constructor-points-by-year'">View Constructor Points</button>
+    <button onclick="window.location.href='/driver-points-per-race'">Driver Points Per Race</button>
     <form method="POST">
         <label for="name">Driver:</label>
         <input type="text" id="name" name="name" required autocomplete="off">
@@ -103,6 +104,78 @@ DRIVER_TEMPLATE = """
     </form>
     {% if output %}
         <h2>Points by Year for {{ name }}</h2>
+        <div>{{ output|safe }}</div>
+    {% endif %}
+</body>
+</html>
+"""
+
+DRIVER_BY_RACE_TEMPLATE = """
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Points</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
+        tr:nth-child(odd) { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #ffffff; }
+        tr:hover { background-color: #ddd; }
+        #suggestions-container {
+            position: absolute; max-height: 200px; overflow-y: auto; border: 1px solid #ddd;
+            border-top: none; background-color: white; z-index: 1000;
+        }
+        #suggestions-container div {
+            padding: 8px; cursor: pointer;
+        }
+        #suggestions-container div:hover {
+            background-color: #ddd;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#name").on("input", function() {
+                let query = $(this).val().toLowerCase();
+                if (query.length >= 1) {
+                    $.ajax({
+                        url: "/autocomplete_drivers",
+                        data: { query: query },
+                        success: function(data) {
+                            let container = $("#suggestions-container");
+                            container.empty();
+                            if (data.length > 0) {
+                                data.forEach(name => {
+                                    container.append(`<div>${name}</div>`);
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
+            $(document).on("click", "#suggestions-container div", function() {
+                $("#name").val($(this).text());
+                $("#suggestions-container").empty();
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Driver Performance</h1>
+    <button onclick="window.location.href='/'">Home</button>
+    <button onclick="window.location.href='/constructor-points-by-year'">View Constructor Points</button>
+    <button onclick="window.location.href='/driver-points-by-year'">Back</button>
+    <form method="POST">
+        <label for="name">Driver:</label>
+        <input type="text" id="name" name="name" required autocomplete="off">
+        <button type="submit">Submit</button>
+        <div id="suggestions-container"></div>
+    </form>
+    {% if output %}
+        <h2>Points by Race for {{ name }}</h2>
         <div>{{ output|safe }}</div>
     {% endif %}
 </body>
@@ -237,6 +310,35 @@ def run_function_driver_eoy_points():
         except Exception as e:
             output = f"An error occurred: {str(e)}"
     return render_template_string(DRIVER_TEMPLATE, output=output, name=name)
+
+@app.route('/driver-points-per-race', methods=['GET', 'POST'])
+def run_function_driver_points_per_race():
+    output = None
+    name = None  # Initialize name variable to be passed to the template
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        if not name:
+            return render_template_string(DRIVER_BY_RACE_TEMPLATE, output="Error: Driver name is required.", name=name)
+
+        # Validate that the name exists in the dataset
+        matched_driver = next((driver for driver in ALL_DRIVER_NAMES if driver["full_name"] == name), None)
+        if not matched_driver:
+            return render_template_string(DRIVER_BY_RACE_TEMPLATE, output="Error: Driver not found.", name=name)
+
+        try:
+            # Call the imported function with the last name
+            function_output =  driverTotalPointsPerRace(name)
+
+            if isinstance(function_output, pd.DataFrame):
+                output = function_output.to_html(classes='table table-striped', index=False)
+            elif isinstance(function_output, (list, dict)):
+                import json
+                output = json.dumps(function_output, indent=4)
+            else:
+                output = str(function_output)
+        except Exception as e:
+            output = f"An error occurred: {str(e)}"
+    return render_template_string(DRIVER_BY_RACE_TEMPLATE, output=output, name=name)
 
 @app.route('/constructor-points-by-year', methods=['GET', 'POST'])
 def run_function_constructor_eoy_points():

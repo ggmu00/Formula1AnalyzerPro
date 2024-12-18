@@ -8,8 +8,7 @@ constructor_results = pd.read_csv('f1_data/constructor_results.csv')
 constructors = pd.read_csv('f1_data/constructors.csv')
 races = pd.read_csv('f1_data/races.csv')
 
-
-def getSpecificConstructor(constructor):
+def mergeConstructorPerformance():
     # Merges the driver_standings table and the drivers table on the driverId column
     constructor_performance = pd.merge(constructor_results, constructors, on='constructorId')
 
@@ -27,6 +26,11 @@ def getSpecificConstructor(constructor):
     constructor_performance.pop('raceId')
     constructor_performance = constructor_performance.rename(columns={'name_y': 'raceName'})
     constructor_performance = constructor_performance.rename(columns={'name_x': 'constructorName'})
+
+    return constructor_performance
+
+def getSpecificConstructor(constructor):
+    constructor_performance = mergeConstructorPerformance()
 
     # Gets the constructor performance stats based on constructor name
     performance = constructor_performance[(constructor_performance['constructorName'] == constructor)].copy()
@@ -50,7 +54,7 @@ def constructorFinalPointsByYear(constructor):
     performance = performance[['year', 'points']]
 
     # Aggregate the points by summing them for each year
-    result = performance.groupby('year', as_index=False).sum()
+    result = performance.groupby('year', as_index=False)['points'].sum()
 
     print(performance.to_string())  # Optional: Debugging print to view the dataset
     return result
