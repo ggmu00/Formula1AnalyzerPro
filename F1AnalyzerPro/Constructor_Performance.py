@@ -43,22 +43,23 @@ def viewMajorConstructorData(constructor):
 
 
 def constructorFinalPointsByYear(constructor):
-    # Call the function to get specific constructor for analysis
+    # Call the function to get specific driver data
+    # Get specific driver performance data
     performance = getSpecificConstructor(constructor)
 
-    # Sort data by date
-    performance = performance.sort_values('date')
+    # Create a dataframe with only relevant columns
+    performance = performance[['year', 'points', 'date']]
 
-    #Sum the points by year
-    result = performance.groupby('year')['points'].tail(1)
+    # Get the last row for each year based on the maximum date (final points by year)
+    result = performance.loc[performance.groupby('year')['date'].idxmax(), ['year', 'points']]
+    print(performance.to_string())
+    return result
 
-    print(result.to_string())
-
-    plt.figure(figsize=(10, 5))
-    sns.lineplot(data=performance, x='year', y='points', marker='o')
-    plt.title("Constructor's Points By Year")
-    plt.gca().invert_yaxis()  # Lower number is better (1st place is better than 10th)
-    plt.xticks(performance['year'].unique())  # Ensure one-year gaps
-    plt.xlabel('Year')
-    plt.ylabel('Championship Standing Position')
-    plt.show()
+    # plt.figure(figsize=(10, 5))
+    # sns.lineplot(data=performance, x='year', y='points', marker='o')
+    # plt.title("Constructor's Points By Year")
+    # plt.gca().invert_yaxis()  # Lower number is better (1st place is better than 10th)
+    # plt.xticks(performance['year'].unique())  # Ensure one-year gaps
+    # plt.xlabel('Year')
+    # plt.ylabel('Championship Standing Position')
+    # plt.show()
