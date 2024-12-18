@@ -43,16 +43,16 @@ def viewMajorConstructorData(constructor):
 
 
 def constructorFinalPointsByYear(constructor):
-    # Call the function to get specific driver data
-    # Get specific driver performance data
+    # Call the function to get specific constructor data
     performance = getSpecificConstructor(constructor)
 
     # Create a dataframe with only relevant columns
-    performance = performance[['year', 'points', 'date']]
+    performance = performance[['year', 'points']]
 
-    # Get the last row for each year based on the maximum date (final points by year)
-    result = performance.loc[performance.groupby('year')['date'].idxmax(), ['year', 'points']]
-    print(performance.to_string())
+    # Aggregate the points by summing them for each year
+    result = performance.groupby('year', as_index=False).sum()
+
+    print(performance.to_string())  # Optional: Debugging print to view the dataset
     return result
 
     # plt.figure(figsize=(10, 5))
