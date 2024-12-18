@@ -8,7 +8,7 @@ constructor_results = pd.read_csv('f1_data/constructor_results.csv')
 constructors = pd.read_csv('f1_data/constructors.csv')
 races = pd.read_csv('f1_data/races.csv')
 
-def mergeConstructorPerformance():
+def mergeConstructorPointsPerformance():
     # Merges the driver_standings table and the drivers table on the driverId column
     constructor_performance = pd.merge(constructor_results, constructors, on='constructorId')
 
@@ -29,11 +29,19 @@ def mergeConstructorPerformance():
 
     return constructor_performance
 
-def getSpecificConstructor(constructor):
-    constructor_performance = mergeConstructorPerformance()
+def mergeConstructorRacePerformance():
+
+    constructor_race_performance=pd.merge(constructors, constructor_results, on='driverId')
+
+
+    constructor_race_performance = constructor_race_performance.rename(columns={'name': 'circuitName'})
+
+    return constructor_race_performance
+
+def getSpecificConstructor(constructor, merger):
 
     # Gets the constructor performance stats based on constructor name
-    performance = constructor_performance[(constructor_performance['constructorName'] == constructor)].copy()
+    performance = merger[(merger['constructorName'] == constructor)].copy()
 
     return performance
 
@@ -41,14 +49,14 @@ def getSpecificConstructor(constructor):
 # Merge all important driver data together.
 def viewMajorConstructorData(constructor):
     # Call the function to get specific constructor for analysis
-    performance = getSpecificConstructor(constructor)
+    performance = getSpecificConstructor(constructor, mergeConstructorPointsPerformance())
 
     print(performance.to_string())
 
 
 def constructorFinalPointsByYear(constructor):
     # Call the function to get specific constructor data
-    performance = getSpecificConstructor(constructor)
+    performance = getSpecificConstructor(constructor, mergeConstructorPointsPerformance())
 
     # Create a dataframe with only relevant columns
     performance = performance[['year', 'points']]
@@ -67,3 +75,12 @@ def constructorFinalPointsByYear(constructor):
     # plt.xlabel('Year')
     # plt.ylabel('Championship Standing Position')
     # plt.show()
+
+def constructorTotalPointsPerRace(driver):
+    performance = getSpecificConstructor(driver, mergeConstructorRacePerformance())
+
+    performance = performance[['circuitName', 'points']]
+
+    result = performance.groupby('circuitName', as_index=False)['points'].sum()
+
+    return result
