@@ -29,7 +29,6 @@ def mergeDriverPointsPerformance():
     driver_performance.pop('raceId')
 
     driver_performance = driver_performance.rename(columns={'name': 'raceName'})
-    results.pop('number')
     return driver_performance
 
 def mergeDriverRacePerformance():
