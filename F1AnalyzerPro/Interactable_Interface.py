@@ -31,10 +31,10 @@ START_TEMPLATE = """
     <title>F1 Performance</title>
 </head>
 <body>
-    <h1>Welcome to F1 Performance Analysis</h1>
+    <h1>Welcome to F1 Analyst Pro</h1>
     <p>Please choose a page to visit:</p>
     <button onclick="window.location.href='/driver-points-by-year'">Driver Points by Year</button>
-    <button onclick="window.location.href='/constructors-points-by-year'">Constructor Points by Year</button>
+    <button onclick="window.location.href='/constructor-points-by-year'">Constructor Points by Year</button>
 </body>
 </html>
 """

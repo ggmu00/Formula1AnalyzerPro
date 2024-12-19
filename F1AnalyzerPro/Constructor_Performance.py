@@ -31,12 +31,32 @@ def mergeConstructorPointsPerformance():
 
 def mergeConstructorRacePerformance():
 
-    constructor_race_performance=pd.merge(constructors, constructor_results, on='driverId')
+    constructor_performance=pd.merge(constructors, constructor_results, on='constructorId')
+    constructor_performance.pop('url')
+    constructor_performance.pop('constructorRef')
+    constructor_performance.pop('constructorId')
+    constructor_performance.pop('constructorResultsId')
+    constructor_performance.pop('status')
+    constructor_performance = constructor_performance.rename(columns={'name': 'constructorName'})
 
+    constructor_performance = pd.merge(constructor_performance, races, on='raceId')
+    constructor_performance.pop('circuitId')
+    constructor_performance.pop('url')
+    constructor_performance.pop('quali_time')
+    constructor_performance.pop('sprint_date')
+    constructor_performance.pop('sprint_time')
+    constructor_performance.pop('quali_date')
+    constructor_performance.pop('fp3_time')
+    constructor_performance.pop('fp3_date')
+    constructor_performance.pop('fp2_time')
+    constructor_performance.pop('fp2_date')
+    constructor_performance.pop('fp1_time')
+    constructor_performance.pop('fp1_date')
+    constructor_performance = constructor_performance.rename(columns={'time_x': 'time'})
+    constructor_performance = constructor_performance.rename(columns={'name': 'circuitName'})
 
-    constructor_race_performance = constructor_race_performance.rename(columns={'name': 'circuitName'})
-
-    return constructor_race_performance
+    print(constructor_performance)
+    return constructor_performance
 
 def getSpecificConstructor(constructor, merger):
 
