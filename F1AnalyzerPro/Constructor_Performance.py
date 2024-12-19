@@ -55,7 +55,6 @@ def mergeConstructorRacePerformance():
     constructor_performance = constructor_performance.rename(columns={'time_x': 'time'})
     constructor_performance = constructor_performance.rename(columns={'name': 'circuitName'})
 
-    print(constructor_performance)
     return constructor_performance
 
 def getSpecificConstructor(constructor, merger):
@@ -70,9 +69,7 @@ def getSpecificConstructor(constructor, merger):
 def viewMajorConstructorData(constructor):
     # Call the function to get specific constructor for analysis
     performance = getSpecificConstructor(constructor, mergeConstructorPointsPerformance())
-
-    print(performance.to_string())
-
+    return performance
 
 def constructorFinalPointsByYear(constructor):
     # Call the function to get specific constructor data

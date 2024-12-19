@@ -166,7 +166,6 @@ DRIVER_BY_RACE_TEMPLATE = """
 <body>
     <h1>Driver Performance By Race</h1>
     <button onclick="window.location.href='/'">Home</button>
-    <button onclick="window.location.href='/constructor-points-by-year'">View Constructor Points</button>
     <button onclick="window.location.href='/driver-points-by-year'">Back</button>
     <form method="POST">
         <label for="name">Driver:</label>
@@ -310,7 +309,6 @@ CONSTRUCTOR_BY_RACE_TEMPLATE = """
 <body>
     <h1>Constructor Performance By Race</h1>
     <button onclick="window.location.href='/'">Home</button>
-    <button onclick="window.location.href='/driver-points-by-year'">View Driver Points</button>
     <button onclick="window.location.href='/constructor-points-by-year'">Back</button>
     <form method="POST">
         <label for="name">Constructor:</label>

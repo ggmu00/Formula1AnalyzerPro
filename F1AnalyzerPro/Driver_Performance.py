@@ -30,7 +30,6 @@ def mergeDriverPointsPerformance():
 
     driver_performance = driver_performance.rename(columns={'name': 'raceName'})
     results.pop('number')
-    print(driver_performance)
     return driver_performance
 
 def mergeDriverRacePerformance():
@@ -65,9 +64,6 @@ def mergeDriverRacePerformance():
     driver_race_performance.pop('time_y')
     driver_race_performance = driver_race_performance.rename(columns={'time_x': 'time'})
     driver_race_performance = driver_race_performance.rename(columns={'name': 'circuitName'})
-
-
-    print(driver_race_performance)
 
     return driver_race_performance
 
