@@ -1,11 +1,5 @@
 from SearchData import *
 
-import kagglehub
-
-# Download latest version
-path = kagglehub.dataset_download("rohanrao/formula-1-world-championship-1950-2020")
-
-print("Path to dataset files:", path)
 
 # Load in the data sets
 circuits = pd.read_csv('f1_data/circuits.csv')

@@ -96,7 +96,6 @@ DRIVER_TEMPLATE = """
     <h1>Driver Performance</h1>
     <button onclick="window.location.href='/'">Home</button>
     <button onclick="window.location.href='/compare-driver-year-points'">Compare Performance</button>
-    <button onclick="window.location.href='/constructor-points-by-year'">View Constructor Points</button>
     <button onclick="window.location.href='/driver-points-per-race'">Driver Points Per Race</button>
     <form method="POST">
         <label for="name">Driver:</label>
@@ -178,7 +177,6 @@ DRIVER_COMPARE_YEAR_POINTS_TEMPLATE = """
     <h1>Compare Driver Performance</h1>
     <button onclick="window.location.href='/'">Home</button>
     <button onclick="window.location.href='/compare-driver-year-points'">Compare Performance</button>
-    <button onclick="window.location.href='/constructor-points-by-year'">View Constructor Points</button>
     <button onclick="window.location.href='/driver-points-per-race'">Driver Points Per Race</button>
     <form method="POST">
         <label for="name1">Driver 1:</label>
@@ -337,8 +335,7 @@ CONSTRUCTOR_TEMPLATE = """
 <body>
     <h1>Constructor Performance</h1>
     <button onclick="window.location.href='/'">Home</button>
-    <button onclick="window.location.href='/driver-points-by-year'">View Driver Points</button>
-        <button onclick="window.location.href='/constructor-points-per-race'">Constructor Points Per Race</button>
+    <button onclick="window.location.href='/constructor-points-per-race'">Constructor Points Per Race</button>
     <form method="POST">
         <label for="name">Constructor:</label>
         <input type="text" id="name" name="name" required autocomplete="off">
